@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  ray-head:
+    image: rayproject/ray:latest-py310
+    container_name: ray-head
+    network_mode: host
+    shm_size: 10g
+    restart: always
+    environment:
+      - RAY_REDIS_ADDRESS=127.0.0.1:6379
+    command: >-
+      ray start --head 
+      --port=6379 
+      --dashboard-host=0.0.0.0 
+      --dashboard-port=8265 
+      --object-manager-port=8076 
+      --node-manager-port=8077 
+      --client-server-port=10001 
+      --min-worker-port=10002 
+      --max-worker-port=10099
+      --resources='{"tier_always_on": 1}'
+      --block

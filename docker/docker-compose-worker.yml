@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  ray-worker:
+    image: rayproject/ray:latest-py310
+    container_name: ray-worker
+    network_mode: host
+    shm_size: 30g  # Adjusted dynamically based on the VM size
+    restart: unless-stopped
+    environment:
+      - HEAD_NODE_IP=${HEAD_NODE_IP}
+      - RAY_TIER=${RAY_TIER}
+      - NUM_CPUS=${NUM_CPUS}
+    command: >-
+      bash -c "ray start --address=$${HEAD_NODE_IP}:6379 \
+      --object-manager-port=8076 \
+      --node-manager-port=8077 \
+      --min-worker-port=10002 \
+      --max-worker-port=10099 \
+      --num-cpus=$${NUM_CPUS} \
+      --resources='{\"$${RAY_TIER}\": 1}' \
+      --block"
