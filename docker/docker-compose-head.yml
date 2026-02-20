@@ -2,13 +2,15 @@ version: '3.8'
 
 services:
   ray-head:
-    image: rayproject/ray:latest-py310
+    image: rayproject/ray:2.9.3-py310
     container_name: ray-head
     network_mode: host
     shm_size: 10g
     restart: always
     environment:
       - RAY_REDIS_ADDRESS=127.0.0.1:6379
+      - RAY_OVERRIDE_NUM_CPUS=32
+      - RAY_OVERRIDE_MEMORY_MB=112640 # 110 GB
     command: >-
       ray start --head 
       --port=6379 

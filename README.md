@@ -71,6 +71,31 @@ cd scripts/
 ./drain-heavy-nodes.sh
 ```
 
+## 🛑 Stopping the Cluster
+
+To stop the Ray cluster components, execute the following steps:
+
+### 1. Stop Heavy Compute Workers (if active)
+Run this on the three 80-core VMs:
+```bash
+cd docker/
+docker-compose -f docker-compose-worker.yml down
+```
+
+### 2. Stop Always-On Workers
+Run this on the two 32-core worker VMs:
+```bash
+cd docker/
+docker-compose -f docker-compose-worker.yml down
+```
+
+### 3. Stop Ray Head Node
+Run this on the 32-core Head Node VM:
+```bash
+cd docker/
+docker-compose -f docker-compose-head.yml down
+```
+
 ## 📊 Monitoring
 
 You can access the Ray Dashboard at `http://<HEAD_NODE_IP>:8265`. 
@@ -78,3 +103,11 @@ For CLI task monitoring, simply execute:
 ```bash
 ./scripts/monitor-tasks.sh
 ```
+## 📋 Prerequisites
+
+Before deploying the Ray cluster, ensure the following are installed and configured on your VMware Virtual Machines:
+
+- **Operating System:** Ubuntu 20.04 LTS or newer
+- **Docker:** Latest stable version. Follow the official Docker documentation for installation.
+- **Docker Compose:** Latest stable version. Usually installed with Docker Desktop or as a separate package.
+- **SSH Access:** Configured SSH access between your control machine and all Ray VMs for script execution.
