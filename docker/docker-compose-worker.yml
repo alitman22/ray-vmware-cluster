@@ -12,6 +12,11 @@ services:
       - RAY_TIER=${RAY_TIER}
       - NUM_CPUS=${NUM_CPUS}
       - RAY_OVERRIDE_MEMORY_MB=${MEMORY_MB}
+    healthcheck:
+      test: ["CMD-SHELL", "ray status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     command: >-
       bash -c "ray start --address=$${HEAD_NODE_IP}:6379 \
       --object-manager-port=8076 \
